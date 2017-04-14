@@ -96,3 +96,7 @@ dist/
 .firebaserc
 database.rules.json
 firebase.json
+
+### Config ###
+server/config/*
+!server/config/default.json

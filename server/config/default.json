@@ -1,0 +1,19 @@
+{
+	"server": {
+		"port": 8080
+	},
+	"users": [
+		{
+			"email": "user_one@mail.com",
+			"password": "12345678"
+		},
+		{
+			"email": "user_two@mail.com",
+			"password": "12345678"
+		},
+		{
+			"email": "user_three@mail.com",
+			"password": "12345678"
+		}
+	]
+}
