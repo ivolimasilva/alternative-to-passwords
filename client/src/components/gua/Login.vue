@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<div class="has-text-centered">
-			<h1 class="title is-1">OTP</h1>
-			<h2 class="subtitle is-3">One Time Password</h2>
+			<h1 class="title is-1">GUA</h1>
+			<h2 class="subtitle is-3">Graphical User Authentication</h2>
 		</div>
 		<div>
 			<form v-on:submit.prevent="onSubmit">
@@ -47,7 +47,7 @@
 
 <script>
 export default {
-	name: 'otp-login',
+	name: 'gua-login',
 	data: function () {
 		return {
 			email: '',
@@ -59,7 +59,7 @@ export default {
 		onSubmit: function () {
 			var self = this;
 
-			Axios.post('http://localhost:9000/otp/login', {
+			Axios.post('http://localhost:9000/gua/login', {
 				email: this.email,
 				password: this.password
 			})

@@ -4,9 +4,6 @@ import VueRouter from 'vue-router';
 
 // Define Axios to global
 window.Axios = require('axios');
-window.Axios.defaults.headers.common = {
-	'X-Requested-With': 'XMLHttpRequest'
-};
 
 // Vue modules
 Vue.use(VueRouter);

@@ -3,6 +3,7 @@
 var Joi = require('joi'),
 	Boom = require('boom'),
 	Config = require('config'),
+	Auth = require('utils/auth'),
 	Promise = require('bluebird');
 
 module.exports = function (server) {
@@ -26,13 +27,13 @@ module.exports = function (server) {
 				}
 			},
 			handler: function (request, reply) {
-				if (Config.users.indexOf(request.params)) {
-					return reply({
-						statusCode: 200
+				Auth.search(request.payload)
+					.then(function () {
+						return reply({ statusCode: 200 });
+					})
+					.catch(function () {
+						return reply(Boom.badData('Incorrect login information.'));
 					});
-				} else {
-					reply(Boom.notFound);
-				}
 			}
 		}
 	});
