@@ -3,13 +3,13 @@
 </template>
 
 <script>
-export default {
+module.exports = {
 	name: 'otp-login',
 	data: function () {
-		return null;
+		return {};
 	},
 	mounted: function () {
-		console.log('otp-login');
+		console.log('OTP Login mounted');
 	}
 }
 </script>

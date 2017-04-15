@@ -13,7 +13,7 @@ export default {
 		return {};
 	},
 	components: {
-		OTPLogin
+		'otp-login': OTPLogin
 	},
 	mounted() {
 		console.log('Home mounted');
