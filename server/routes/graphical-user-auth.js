@@ -30,6 +30,8 @@ module.exports = function (server) {
 				Auth.search(request.payload)
 					.then(function () {
 						return reply({ statusCode: 200 });
+
+						// TODO: Reply with the URL of this user's image
 					})
 					.catch(function () {
 						return reply(Boom.badData('Incorrect login information.'));

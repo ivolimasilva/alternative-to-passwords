@@ -14,8 +14,8 @@
 						       v-model="email"
 						       required>
 						<span class="icon is-small">
-							<i class="fa fa-envelope"></i>
-						</span>
+								<i class="fa fa-envelope"></i>
+							</span>
 					</p>
 				</div>
 				<div class="field">
@@ -26,8 +26,8 @@
 						       v-model="password"
 						       required>
 						<span class="icon is-small">
-							<i class="fa fa-lock"></i>
-						</span>
+								<i class="fa fa-lock"></i>
+							</span>
 					</p>
 				</div>
 				<span class="help is-danger"
@@ -42,17 +42,25 @@
 				</div>
 			</form>
 		</div>
+		<u2f-modal v-bind:is-active="modal"
+		           v-on:close="closeModal"></u2f-modal>
 	</div>
 </template>
 
 <script>
+import U2FModal from './Modal.vue';
+
 export default {
 	name: 'u2f-login',
+	components: {
+		'u2f-modal': U2FModal
+	},
 	data: function () {
 		return {
 			email: '',
 			password: '',
-			error: ''
+			error: '',
+			modal: false
 		};
 	},
 	methods: {
@@ -66,10 +74,14 @@ export default {
 				.then(function (response) {
 					self.error = '';
 					// TODO
+					self.modal = true;
 				})
 				.catch(error => {
 					self.error = error.response.data.message;
 				});
+		},
+		closeModal: function () {
+			this.modal = false;
 		}
 	}
 }

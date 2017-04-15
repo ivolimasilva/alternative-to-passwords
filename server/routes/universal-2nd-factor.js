@@ -30,6 +30,8 @@ module.exports = function (server) {
 				Auth.search(request.payload)
 					.then(function () {
 						return reply({ statusCode: 200 });
+
+						// TODO: Wait to receive the private key of the user? But server must flag that this user has passed the first form factor, right? Two ideas: change users to a DB (like MongoDB) and change a user's property or do the same but with files.
 					})
 					.catch(function () {
 						return reply(Boom.badData('Incorrect login information.'));

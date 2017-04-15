@@ -30,6 +30,8 @@ module.exports = function (server) {
 				Auth.search(request.payload)
 					.then(function () {
 						return reply({ statusCode: 200 });
+
+						// TODO: Create a random code and send it to the mobile app
 					})
 					.catch(function () {
 						return reply(Boom.badData('Incorrect login information.'));

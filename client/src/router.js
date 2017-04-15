@@ -1,5 +1,6 @@
 import VueRouter from 'vue-router';
 
+// Definition of View Routes
 let routes = [
 	{
 		path: '/',

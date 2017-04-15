@@ -42,17 +42,25 @@
 				</div>
 			</form>
 		</div>
+		<otp-modal v-bind:is-active="modal"
+		           v-on:close="closeModal"></otp-modal>
 	</div>
 </template>
 
 <script>
+import OTPModal from './Modal.vue';
+
 export default {
 	name: 'otp-login',
+	components: {
+		'otp-modal': OTPModal
+	},
 	data: function () {
 		return {
 			email: '',
 			password: '',
-			error: ''
+			error: '',
+			modal: false
 		};
 	},
 	methods: {
@@ -66,10 +74,14 @@ export default {
 				.then(function (response) {
 					self.error = '';
 					// TODO
+					self.modal = true;
 				})
 				.catch(error => {
 					self.error = error.response.data.message;
 				});
+		},
+		closeModal: function () {
+			this.modal = false;
 		}
 	}
 }
