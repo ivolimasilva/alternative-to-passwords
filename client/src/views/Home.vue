@@ -7,6 +7,7 @@
 			</div>
 			<div class="container">
 				<div class="columns">
+					<tbp-login class="column"></tbp-login>
 					<otp-login class="column"></otp-login>
 					<u2f-login class="column"></u2f-login>
 					<gua-login class="column"></gua-login>
@@ -17,6 +18,7 @@
 </template>
 
 <script>
+import TBPLogin from '../components/std/Login.vue';
 import OTPLogin from '../components/otp/Login.vue';
 import U2FLogin from '../components/u2f/Login.vue';
 import GUALogin from '../components/gua/Login.vue';
@@ -24,6 +26,7 @@ import GUALogin from '../components/gua/Login.vue';
 export default {
 	name: 'Home',
 	components: {
+		'tbp-login': TBPLogin,
 		'otp-login': OTPLogin,
 		'u2f-login': U2FLogin,
 		'gua-login': GUALogin
@@ -31,7 +34,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .is-fullheight {
 	min-height: calc(100vh - 50px) !important;
 }
