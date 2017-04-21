@@ -27,8 +27,7 @@ module.exports = function (server) {
 			},
 			handler: function (request, reply) {
 				if (request.payload.email == Config.test.email) {
-					// Generate Code
-					// Send code to mobile app
+					// Set flag that server is expecting to receive U2F in meantime
 					return reply({ statusCode: 200 });
 				} else {
 					return reply(Boom.badData('Incorrect login information.'));

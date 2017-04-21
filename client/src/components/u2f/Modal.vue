@@ -11,6 +11,7 @@
 			</header>
 			<section class="modal-card-body">
 				<!-- Here maybe a icon of a device key? This form has no validate button because that event should be triggered by the insertation of the device key -->
+				<p>Waiting for U2F Key to be inserted.</p>
 			</section>
 			<footer class="modal-card-foot">
 				<a class="button"
