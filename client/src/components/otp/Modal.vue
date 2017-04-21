@@ -1,22 +1,36 @@
 <template>
-	<div class="modal"
-	     v-bind:class="{ 'is-active' : isActive }">
-		<div class="modal-background"
-		     v-on:click="close"></div>
+	<div class="modal" v-bind:class="{ 'is-active' : isActive }">
+		<div class="modal-background" v-on:click="close"></div>
 		<div class="modal-card">
 			<header class="modal-card-head">
 				<p class="modal-card-title">OPT - Insert the code from the app</p>
-				<button class="delete"
-				        v-on:click="close"></button>
+				<button class="delete" v-on:click="close"></button>
 			</header>
 			<section class="modal-card-body">
 				<!-- Here will be a form in order to send the code to the server for validation -->
+				<form v-on:submit.prevent="onSubmit">
+					<div class="field">
+						<p class="control has-icon">
+							<input class="input is-medium" type="text" placeholder="Code" v-model="code" required>
+							<span class="icon is-small">
+													<i class="fa fa-key"></i>
+												</span>
+						</p>
+					</div>
+					<span class="help is-danger" v-text="error"></span>
+					<div class="field">
+						<p class="control">
+							<button class="button is-primary is-medium is-fullwidth" type="submit">
+								Validate
+							</button>
+						</p>
+					</div>
+				</form>
 			</section>
-			<footer class="modal-card-foot">
+			<!--footer class="modal-card-foot">
 				<a class="button is-primary">Validate</a>
-				<a class="button"
-				   v-on:click="close">Cancel</a>
-			</footer>
+				<a class="button" v-on:click="close">Cancel</a>
+			</footer-->
 		</div>
 	</div>
 </template>
@@ -26,7 +40,8 @@ export default {
 	name: 'otp-modal',
 	data: function () {
 		return {
-			code: ''
+			code: '',
+			error: ''
 		};
 	},
 	props: {
@@ -37,6 +52,7 @@ export default {
 	},
 	methods: {
 		onSubmit: function () {
+			this.error = 'Not implemented yet.';
 		},
 		close: function () {
 			this.$emit('close');
@@ -45,7 +61,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .control {
 	margin-top: 1em;
 }
