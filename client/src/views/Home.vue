@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import TBPLogin from '../components/std/Login.vue';
+import TBPLogin from '../components/tbp/Login.vue';
 import OTPLogin from '../components/otp/Login.vue';
 import U2FLogin from '../components/u2f/Login.vue';
 import GUALogin from '../components/gua/Login.vue';
