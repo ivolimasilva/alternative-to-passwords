@@ -55,8 +55,7 @@ export default {
 			var self = this;
 
 			Axios.post('http://localhost:9000/gua/login', {
-				email: this.email,
-				password: this.password
+				email: this.email
 			})
 				.then(function (response) {
 					self.error = '';

@@ -3,7 +3,6 @@
 var Joi = require('joi'),
 	Boom = require('boom'),
 	Config = require('config'),
-	Auth = require('utils/auth'),
 	Promise = require('bluebird');
 
 module.exports = function (server) {

@@ -3,7 +3,6 @@
 var Joi = require('joi'),
 	Boom = require('boom'),
 	Config = require('config'),
-	Auth = require('utils/auth'),
 	Promise = require('bluebird');
 
 module.exports = function (server) {
@@ -22,20 +21,17 @@ module.exports = function (server) {
 			// Validate payload params before handler gets the load
 			validate: {
 				payload: {
-					email: Joi.string().email().required(),
-					password: Joi.string().regex(/^[a-zA-Z0-9]{8,30}$/).required()
+					email: Joi.string().email().required()
 				}
 			},
 			handler: function (request, reply) {
-				Auth.search(request.payload)
-					.then(function () {
-						return reply({ statusCode: 200 });
-
-						// TODO: Reply with the URL of this user's image
-					})
-					.catch(function () {
-						return reply(Boom.badData('Incorrect login information.'));
-					});
+				if (request.payload.email == Config.test.email) {
+					// Generate Code
+					// Send code to mobile app
+					return reply({ statusCode: 200 });
+				} else {
+					return reply(Boom.badData('Incorrect login information.'));
+				}
 			}
 		}
 	});

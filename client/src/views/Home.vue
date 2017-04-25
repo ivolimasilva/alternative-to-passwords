@@ -7,10 +7,10 @@
 			</div>
 			<div class="container">
 				<div class="columns">
-					<tbp-login class="column pull-bottom"></tbp-login>
-					<otp-login class="column pull-bottom"></otp-login>
-					<u2f-login class="column pull-bottom"></u2f-login>
-					<gua-login class="column pull-bottom"></gua-login>
+					<tbp-login class="column login-form"></tbp-login>
+					<otp-login class="column login-form"></otp-login>
+					<u2f-login class="column login-form"></u2f-login>
+					<gua-login class="column login-form"></gua-login>
 				</div>
 			</div>
 		</div>
@@ -46,7 +46,9 @@ export default {
 	margin-bottom: 5vh;
 }
 
-.pull-bottom {
-	margin-top: auto;
+.login-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 </style>
