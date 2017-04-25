@@ -18,18 +18,6 @@
 						</span>
 					</p>
 				</div>
-				<div class="field">
-					<p class="control has-icon">
-						<input class="input is-medium"
-						       type="password"
-						       placeholder="Password"
-						       v-model="password"
-						       required>
-						<span class="icon is-small">
-							<i class="fa fa-lock"></i>
-						</span>
-					</p>
-				</div>
 				<span class="help is-danger"
 				      v-text="error"></span>
 				<div class="field">
@@ -51,14 +39,13 @@
 import GUAModal from './Modal.vue';
 
 export default {
-	name: 'otp-login',
+	name: 'gua-login',
 	components: {
 		'gua-modal': GUAModal
 	},
 	data: function () {
 		return {
 			email: '',
-			password: '',
 			error: '',
 			modal: false
 		};
@@ -87,7 +74,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .control {
 	margin-top: 1em;
 }

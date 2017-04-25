@@ -7,10 +7,10 @@
 			</div>
 			<div class="container">
 				<div class="columns">
-					<tbp-login class="column"></tbp-login>
-					<otp-login class="column"></otp-login>
-					<u2f-login class="column"></u2f-login>
-					<gua-login class="column"></gua-login>
+					<tbp-login class="column pull-bottom"></tbp-login>
+					<otp-login class="column pull-bottom"></otp-login>
+					<u2f-login class="column pull-bottom"></u2f-login>
+					<gua-login class="column pull-bottom"></gua-login>
 				</div>
 			</div>
 		</div>
@@ -35,16 +35,18 @@ export default {
 </script>
 
 <style scoped>
-.is-fullheight {
-	min-height: calc(100vh - 50px) !important;
-}
-
-.hero-body {
-	margin-bottom: 25vh;
+@media only screen and (min-width: 760px) {
+	.hero-body {
+		margin-bottom: 25vh;
+	}
 }
 
 .hero-body .container .container {
 	margin-top: 5vh;
 	margin-bottom: 5vh;
+}
+
+.pull-bottom {
+	margin-top: auto;
 }
 </style>
