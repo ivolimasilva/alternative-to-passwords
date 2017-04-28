@@ -3,6 +3,7 @@
 var Joi = require('joi'),
 	Boom = require('boom'),
 	Config = require('config'),
+	Jwt = require('utils/jwt'),
 	Auth = require('utils/auth'),
 	Promise = require('bluebird');
 
@@ -29,7 +30,18 @@ module.exports = function (server) {
 			handler: function (request, reply) {
 				// Verify with the registred users
 				if (request.payload.email == Config.test.email && request.payload.password == Config.test.password) {
-					return reply({ statusCode: 200 });
+
+					Jwt.encode(Config.test.id)
+						.then(function (encoded) {
+
+							console.log(encoded);
+
+							return reply({ jwt: encoded });
+						})
+						.catch(function (err) {
+							return reply(Boom.badImplementation('Code monkeys bro.'));
+						});
+
 				} else {
 					return reply(Boom.badData('Incorrect login information.'));
 				}
