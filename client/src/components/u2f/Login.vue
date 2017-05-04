@@ -62,7 +62,7 @@ export default {
 		onSign: function () {
 			var self = this;
 
-			Axios.post('http://localhost:9000/u2f/login', {
+			Axios.post('https://localhost:9000/u2f/login', {
 				email: this.email
 			})
 				.then(function (response) {

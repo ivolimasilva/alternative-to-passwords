@@ -11,7 +11,7 @@ const paths = {
     }
 };
 
-function U2FRegister(tokenName) {
+exports.U2FRegister = function(tokenName) {
     return new Promise(function(resolve, reject) {
         console.log("Requesting U2F registration challenge")
         $.get(paths.u2f.register, {tokenName: tokenName}, requestCallback);
