@@ -1,7 +1,3 @@
-// U2F Client Side Wrapper
-// Calls the standard U2F High Level Browser API
-// Copyright 2016 Ryan Kurte
-
 'use strict';
 
 const paths = {
@@ -11,10 +7,10 @@ const paths = {
     }
 };
 
-exports.U2FRegister = function(tokenName) {
-    return new Promise(function(resolve, reject) {
+exports.U2FRegister = function (tokenName) {
+    return new Promise(function (resolve, reject) {
         console.log("Requesting U2F registration challenge")
-        $.get(paths.u2f.register, {tokenName: tokenName}, requestCallback);
+        $.get(paths.u2f.register, { tokenName: tokenName }, requestCallback);
 
         function requestCallback(data) {
             console.log("Waiting for U2F input");
@@ -22,12 +18,12 @@ exports.U2FRegister = function(tokenName) {
         }
 
         function registerCallback(res) {
-            if(typeof res.errorCode !== 'undefined') {
-                if(res.errorCode == u2f.ErrorCodes.TIMEOUT) {
+            if (typeof res.errorCode !== 'undefined') {
+                if (res.errorCode == u2f.ErrorCodes.TIMEOUT) {
                     return reject('Timed out waiting for user input');
-                } else if(res.errorCode == u2f.ErrorCodes.BAD_REQUEST) {
+                } else if (res.errorCode == u2f.ErrorCodes.BAD_REQUEST) {
                     return reject('Bad U2F Request');
-                } else if(res.errorCode == u2f.ErrorCodes.DEVICE_INELIGIBLE) {
+                } else if (res.errorCode == u2f.ErrorCodes.DEVICE_INELIGIBLE) {
                     return reject('Device ineligible');
                 } else {
                     return reject('Unknown error: ' + res.errorCode);
@@ -39,7 +35,7 @@ exports.U2FRegister = function(tokenName) {
         }
 
         function responseCallback(data) {
-            if(typeof data.error !== 'undefined') {
+            if (typeof data.error !== 'undefined') {
                 console.log("Error: " + data.error);
                 return reject(data.error);
             }
@@ -49,8 +45,8 @@ exports.U2FRegister = function(tokenName) {
     });
 }
 
-function U2FSign() {
-    return new Promise(function(resolve, reject) {
+exports.U2FSign = function () {
+    return new Promise(function (resolve, reject) {
         console.log("Requesting U2F signing challenge")
         $.get(paths.u2f.sign, {}, requestCallback);
 
@@ -60,12 +56,12 @@ function U2FSign() {
         }
 
         function signatureCallback(res) {
-            if(typeof res.errorCode !== 'undefined') {
-                if(res.errorCode == u2f.ErrorCodes.TIMEOUT) {
+            if (typeof res.errorCode !== 'undefined') {
+                if (res.errorCode == u2f.ErrorCodes.TIMEOUT) {
                     return reject('Timed out waiting for user input');
-                } else if(res.errorCode == u2f.ErrorCodes.BAD_REQUEST) {
+                } else if (res.errorCode == u2f.ErrorCodes.BAD_REQUEST) {
                     return reject('Bad U2F Request');
-                } else if(res.errorCode == u2f.ErrorCodes.DEVICE_INELIGIBLE) {
+                } else if (res.errorCode == u2f.ErrorCodes.DEVICE_INELIGIBLE) {
                     return reject('Device ineligible');
                 } else {
                     return reject('Unknown error: ' + res.errorCode);
@@ -77,7 +73,7 @@ function U2FSign() {
         }
 
         function responseCallback(data) {
-            if(typeof data.error !== 'undefined') {
+            if (typeof data.error !== 'undefined') {
                 console.log("Error: " + data.error);
                 return reject(data.error);
             }
@@ -86,6 +82,3 @@ function U2FSign() {
         }
     });
 }
-
-
-

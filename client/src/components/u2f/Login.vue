@@ -5,41 +5,28 @@
 			<h2 class="subtitle is-3">Universal 2<sup>nd</sup> Factor</h2>
 		</div>
 		<div>
-		<form v-on:submit.prevent="onRegister">
-			<p class="control">
-				<button class="button is-primary is-medium is-fullwidth"
-						type="submit">
-					Register U2F device
-				</button>
-			</p>
-		</form>
-			<form v-on:submit.prevent="onSign">
+			<form v-on:submit.prevent="onRegister">
 				<div class="field">
-					<p class="control has-icon">
-						<input class="input is-medium"
-						       type="email"
-						       placeholder="Email"
-						       v-model="email"
-						       required>
-						<span class="icon is-small">
-								<i class="fa fa-envelope"></i>
-							</span>
+					<span class="help is-danger" v-text="error"></span>
+					<p class="control">
+						<button class="button is-primary is-medium is-fullwidth" type="submit">
+							Register U2F device
+						</button>
 					</p>
 				</div>
-				<span class="help is-danger"
-				      v-text="error"></span>
+			</form>
+			<form v-on:submit.prevent="onLogin">
+				<span class="help is-danger" v-text="error"></span>
 				<div class="field">
 					<p class="control">
-						<button class="button is-primary is-medium is-fullwidth"
-						        type="submit">
+						<button class="button is-primary is-medium is-fullwidth" type="submit">
 							Login
 						</button>
 					</p>
 				</div>
 			</form>
 		</div>
-		<u2f-modal v-bind:is-active="modal"
-		           v-on:close="closeModal"></u2f-modal>
+		<u2f-modal v-bind:is-active="modalIsActive" v-bind:modalTitle="modalTitle" v-bind:modalMessage="modalMessage" v-on:close="closeModal"></u2f-modal>
 	</div>
 </template>
 
@@ -53,33 +40,49 @@ export default {
 	},
 	data: function () {
 		return {
-			email: '',
+			// email: '',
 			error: '',
-			modal: false
+			modalIsActive: false,
+			modalTitle: '',
+			modalMessage: ''
 		};
 	},
 	methods: {
-		onSign: function () {
+		onRegister: function () {
 			var self = this;
+			self.modalTitle = 'U2F device registration';
+			self.modalMessage = 'Insert key and press button.';
+			self.modalIsActive = true;
 
-			Axios.post('https://localhost:9000/u2f/login', {
-				email: this.email
+			Axios.post('https://localhost:9000/u2f/register', {
 			})
 				.then(function (response) {
 					self.error = '';
-					// TODO
-					self.modal = true;
+
+				})
+				.catch(error => {
+					self.error = error.response.data.message;
+				})
+			// self.modal = false;
+		},
+
+		onLogin: function () {
+			var self = this;
+
+			Axios.post('https://localhost:9000/u2f/login', {
+			})
+				.then(function (response) {
+					self.error = '';
 				})
 				.catch(error => {
 					self.error = error.response.data.message;
 				});
 		},
-		onRegister: function () {
-			var self = this;
-		},
 		closeModal: function () {
-			this.modal = false;
-		},
+			this.modalIsActive = false;
+			this.modalTitle = '';
+			this.modalMessage = '';
+		}
 	}
 }
 </script>
