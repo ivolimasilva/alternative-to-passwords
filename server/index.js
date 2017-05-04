@@ -2,7 +2,8 @@
 
 var Hapi = require('hapi'),
 	Joi = require('joi'),
-	Config = require('config');
+	Config = require('config'),
+	Fs = require('fs');
 
 // Create a server with validation
 var server = new Hapi.Server({
@@ -18,6 +19,10 @@ server.connection({
 	port: Config.server.port,
 	routes: {
 		cors: true
+	},
+	tls: {
+		key: Fs.readFileSync("certs/fakeName.key"),
+		cert: Fs.readFileSync("certs/public.pem")
 	}
 });
 
@@ -72,5 +77,4 @@ server.register({
 	server.start(() => {
 		console.info('Server started @', server.info.uri);
 	});
-
 });

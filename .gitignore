@@ -100,3 +100,6 @@ firebase.json
 ### Config ###
 server/config/*
 !server/config/default.json
+
+### Certs ###
+certs/

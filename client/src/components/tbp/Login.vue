@@ -51,7 +51,7 @@ export default {
 		onSubmit: function () {
 			var self = this;
 
-			Axios.post('http://localhost:9000/tbp/login', {
+			Axios.post('https://localhost:9000/tbp/login', {
 				email: this.email,
 				password: this.password
 			})

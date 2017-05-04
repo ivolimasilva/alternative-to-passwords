@@ -5,7 +5,15 @@
 			<h2 class="subtitle is-3">Universal 2<sup>nd</sup> Factor</h2>
 		</div>
 		<div>
-			<form v-on:submit.prevent="onSubmit">
+		<form v-on:submit.prevent="onRegister">
+			<p class="control">
+				<button class="button is-primary is-medium is-fullwidth"
+						type="submit">
+					Register U2F device
+				</button>
+			</p>
+		</form>
+			<form v-on:submit.prevent="onSign">
 				<div class="field">
 					<p class="control has-icon">
 						<input class="input is-medium"
@@ -51,7 +59,7 @@ export default {
 		};
 	},
 	methods: {
-		onSubmit: function () {
+		onSign: function () {
 			var self = this;
 
 			Axios.post('http://localhost:9000/u2f/login', {
@@ -66,9 +74,12 @@ export default {
 					self.error = error.response.data.message;
 				});
 		},
+		onRegister: function () {
+			var self = this;
+		},
 		closeModal: function () {
 			this.modal = false;
-		}
+		},
 	}
 }
 </script>

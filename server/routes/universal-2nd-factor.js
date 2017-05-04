@@ -4,6 +4,9 @@ var Joi = require('joi'),
 	Boom = require('boom'),
 	Config = require('config'),
 	Auth = require('utils/auth'),
+	https = require('https'),
+	u2f2 = require('u2f'),
+	u2f = require('authdog'),
 	Promise = require('bluebird');
 
 module.exports = function (server) {
