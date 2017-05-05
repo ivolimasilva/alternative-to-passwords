@@ -32,8 +32,9 @@
 
 <script>
 
-import U2FModal from './Modal.vue';
-import U2FApi  from './u2f-api.js';
+import U2FModal from './Modal.vue'
+import mixins from './mixins.js'
+// import U2FApi  from './u2f-api.js';
 
 function registerCallback(res) {
 	if (typeof res.errorCode !== 'undefined') {
@@ -62,7 +63,7 @@ function registerCallback(res) {
 // }
 
 export default {
-	mixins: [U2FApi],
+	mixins: [mixins],
 	name: 'u2f-login',
 	components: {
 		'u2f-modal': U2FModal
@@ -93,10 +94,11 @@ export default {
 						console.log(response.data.appId);
 						console.log(response.data.registerRequests);
 						console.log(response.data.registeredKeys);
-						U2FApi.register(response.data.appId, response.data.registerRequests, response.data.registeredKeys, registerCallback, 10);
+						mixins.test();
+						// U2FApi.register(response.data.appId, response.data.registerRequests, response.data.registeredKeys, registerCallback, 10);
 					})
 					.catch(error => {
-						console.log("axios get error");
+						console.log("Axios get error");
 						// self.error = error.response.data.message;
 					})
 			});
@@ -113,21 +115,21 @@ export default {
 			// self.modal = false;
 		},
 
-		onLogin: function () {
-			var self = this;
-			self.modalTitle = 'Login using a U2F device';
-			self.modalMessage = 'Insert key and press button to login.';
-			self.modalIsActive = true;
+		// onLogin: function () {
+		// 	var self = this;
+		// 	self.modalTitle = 'Login using a U2F device';
+		// 	self.modalMessage = 'Insert key and press button to login.';
+		// 	self.modalIsActive = true;
 
-			Axios.post('https://localhost:9000/u2f/login', {
-			})
-				.then(function (response) {
-					self.error = '';
-				})
-				.catch(error => {
-					self.error = error.response.data.message;
-				});
-		},
+		// 	Axios.post('https://localhost:9000/u2f/login', {
+		// 	})
+		// 		.then(function (response) {
+		// 			self.error = '';
+		// 		})
+		// 		.catch(error => {
+		// 			self.error = error.response.data.message;
+		// 		});
+		// },
 		closeModal: function () {
 			this.modalIsActive = false;
 			this.modalTitle = '';
