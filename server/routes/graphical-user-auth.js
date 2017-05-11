@@ -3,7 +3,9 @@
 var Joi = require('joi'),
 	Boom = require('boom'),
 	Config = require('config'),
-	Promise = require('bluebird');
+	Promise = require('bluebird'),
+	Path = require('path'),
+	Inert = require('inert');
 
 module.exports = function (server) {
 
@@ -28,7 +30,10 @@ module.exports = function (server) {
 				if (request.payload.email == Config.test.email) {
 					// Generate Code
 					// Send code to mobile app
-					return reply({ statusCode: 200 });
+					var imageauthUrl = Path.resolve('./images/test_image.jpg');
+					console.log(imageauthUrl);
+					return reply({ imageauth: 'http://localhost:9000/images/test_image.jpg' });
+
 				} else {
 					return reply(Boom.badData('Incorrect login information.'));
 				}
@@ -36,4 +41,15 @@ module.exports = function (server) {
 		}
 	});
 
+	server.route({
+		method: 'GET',
+		path: '/images/{param*}',
+		handler: {
+			directory: {
+				path: '.',
+				redirectToSlash: true,
+				index: true
+			}
+		}
+	});
 };

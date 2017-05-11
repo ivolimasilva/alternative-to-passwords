@@ -10,6 +10,7 @@
 				        v-on:click="close"></button>
 			</header>
 			<section class="modal-card-body">
+				<img :src="imageUrl"/>
 				<!-- Here will be an image and this component will listen to where the user clicks in order to send those coordinates to the server for validation -->
 			</section>
 			<footer class="modal-card-foot">
@@ -33,6 +34,9 @@ export default {
 		isActive: {
 			type: Boolean,
 			required: true
+		},
+		imageUrl:{
+			type: String
 		}
 	},
 	methods: {

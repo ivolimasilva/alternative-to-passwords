@@ -31,7 +31,8 @@
 			</form>
 		</div>
 		<gua-modal v-bind:is-active="modal"
-		           v-on:close="closeModal"></gua-modal>
+		           v-on:close="closeModal"
+				   v-bind:imageUrl="imageauth"></gua-modal>
 	</div>
 </template>
 
@@ -47,7 +48,8 @@ export default {
 		return {
 			email: '',
 			error: '',
-			modal: false
+			modal: false,
+			imageauth: ''
 		};
 	},
 	methods: {
@@ -59,8 +61,9 @@ export default {
 			})
 				.then(function (response) {
 					self.error = '';
-					// TODO
+					console.log(response);
 					self.modal = true;
+					self.imageauth = response.data.imageauth;
 				})
 				.catch(error => {
 					self.error = error.response.data.message;
