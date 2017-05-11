@@ -30,7 +30,7 @@ module.exports = function (server) {
 			handler: function (request, reply) {
 
 				var tokens = [];
-				var appId = 'https://localhost:' + 9000;
+				var appId = 'https://localhost:' + 8080;
 
 				u2f.startRegistration(appId, tokens)
 					.then(function (registrationRequest) {

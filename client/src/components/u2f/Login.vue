@@ -2,7 +2,8 @@
 	<div>
 		<div class="has-text-centered">
 			<h1 class="title is-1">U2F</h1>
-			<h2 class="subtitle is-3">Universal 2<sup>nd</sup> Factor</h2>
+			<h2 class="subtitle is-3">Universal 2
+				<sup>nd</sup> Factor</h2>
 		</div>
 		<div>
 			<form v-on:submit.prevent="onRegister">
@@ -33,22 +34,23 @@
 <script>
 
 import U2FModal from './Modal.vue'
-import mixins from './mixins.js'
-// import U2FApi  from './u2f-api.js';
 
 function registerCallback(res) {
+	console.log(res);
 	if (typeof res.errorCode !== 'undefined') {
-		if (res.errorCode == U2FApi.u2f.ErrorCodes.TIMEOUT) {
-			return reject('Timed out waiting for user input');
-		} else if (res.errorCode == U2FApi.u2f.ErrorCodes.BAD_REQUEST) {
-			return reject('Bad U2F Request');
-		} else if (res.errorCode == U2FApi.u2f.ErrorCodes.DEVICE_INELIGIBLE) {
-			return reject('Device ineligible');
+		if (res.errorCode == u2f.ErrorCodes.TIMEOUT) {
+			console.log('Timed out waiting for user input');
+			// return reject('Timed out waiting for user input');
+		} else if (res.errorCode == u2f.ErrorCodes.BAD_REQUEST) {
+			console.log('Bad U2F Request');
+			// return reject('Bad U2F Request');
+		} else if (res.errorCode == u2f.ErrorCodes.DEVICE_INELIGIBLE) {
+			console.log('Device ineligible');
+			// return reject('Device ineligible');
 		} else {
-			return reject('Unknown error: ' + res.errorCode);
+			// return reject('Unknown error: ' + res.errorCode);
 		}
 	}
-
 	console.log("Posting U2F registration response")
 	// $.post(paths.u2f.register, res, responseCallback);
 }
@@ -61,82 +63,82 @@ function registerCallback(res) {
 // 	console.log("U2F enrolment complete");
 // 	resolve(data);
 // }
-
-export default {
-	mixins: [mixins],
-	name: 'u2f-login',
-	components: {
-		'u2f-modal': U2FModal
-	},
-	data: function () {
-		return {
-			// email: '',
-			error: '',
-			modalIsActive: false,
-			modalTitle: '',
-			modalMessage: ''
-		};
-	},
-	methods: {
-		onRegister: function () {
-			var self = this;
-			self.modalTitle = 'U2F device registration';
-			self.modalMessage = 'Insert key and press button to register.';
-			self.modalIsActive = true;
-
-			return new Promise(function (resolve, reject) {
-				console.log("Requesting U2F registration challenge")
-				// $.get(paths.u2f.register, { tokenName: tokenName }, requestCallback);
-				Axios.get('https://localhost:9000/u2f/register', { tokenName: "" })
-					.then(function (response) {
-						self.error = '';
-						console.log("Waiting for U2F input");
-						console.log(response.data.appId);
-						console.log(response.data.registerRequests);
-						console.log(response.data.registeredKeys);
-						mixins.test();
-						// U2FApi.register(response.data.appId, response.data.registerRequests, response.data.registeredKeys, registerCallback, 10);
-					})
-					.catch(error => {
-						console.log("Axios get error");
-						// self.error = error.response.data.message;
-					})
-			});
-
-			// Axios.post('https://localhost:9000/u2f/register', {
-			// })
-			// 	.then(function (response) {
-			// 		self.error = '';
-
-			// 	})
-			// 	.catch(error => {
-			// 		self.error = error.response.data.message;
-			// 	})
-			// self.modal = false;
+export default
+	{
+		name: 'u2f-login',
+		components: {
+			'u2f-modal': U2FModal
 		},
+		data: function () {
+			return {
+				// email: '',
+				error: '',
+				modalIsActive: false,
+				modalTitle: '',
+				modalMessage: ''
+			};
+		},
+		methods: {
+			onRegister: function () {
+				var self = this;
+				self.modalTitle = 'U2F device registration';
+				self.modalMessage = 'Insert key and press button to register.';
+				self.modalIsActive = true;
 
-		// onLogin: function () {
-		// 	var self = this;
-		// 	self.modalTitle = 'Login using a U2F device';
-		// 	self.modalMessage = 'Insert key and press button to login.';
-		// 	self.modalIsActive = true;
+				return new Promise(function (resolve, reject) {
+					console.log("Requesting U2F registration challenge")
+					// $.get(paths.u2f.register, { tokenName: tokenName }, requestCallback);
+					Axios.get('https://localhost:9000/u2f/register', { tokenName: "" })
+						.then(function (response) {
+							self.error = '';
+							console.log("Waiting for U2F input");
+							console.log(response.data.appId);
+							console.log(response.data.registerRequests);
+							console.log(response.data.registeredKeys);
 
-		// 	Axios.post('https://localhost:9000/u2f/login', {
-		// 	})
-		// 		.then(function (response) {
-		// 			self.error = '';
-		// 		})
-		// 		.catch(error => {
-		// 			self.error = error.response.data.message;
-		// 		});
-		// },
-		closeModal: function () {
-			this.modalIsActive = false;
-			this.modalTitle = '';
-			this.modalMessage = '';
+							u2f.register(response.data.appId, response.data.registerRequests, response.data.registeredKeys, registerCallback, 10);
+							resolve();
+						})
+						.catch(error => {
+							console.log("Axios get error");
+							// self.error = error.response.data.message;
+						})
+				});
+
+				// Axios.post('https://localhost:9000/u2f/register', {
+				// })
+				// 	.then(function (response) {
+				// 		self.error = '';
+
+				// 	})
+				// 	.catch(error => {
+				// 		self.error = error.response.data.message;
+				// 	})
+				// self.modal = false;
+			},
+
+			// onLogin: function () {
+			// 	var self = this;
+			// 	self.modalTitle = 'Login using a U2F device';
+			// 	self.modalMessage = 'Insert key and press button to login.';
+			// 	self.modalIsActive = true;
+
+			// 	Axios.post('https://localhost:9000/u2f/login', {
+			// 	})
+			// 		.then(function (response) {
+			// 			self.error = '';
+			// 		})
+			// 		.catch(error => {
+			// 			self.error = error.response.data.message;
+			// 		});
+			// },
+			closeModal: function () {
+				this.modalIsActive = false;
+				this.modalTitle = '';
+				this.modalMessage = '';
+			}
 		}
 	}
-}
 </script>
 
 <style>
