@@ -26,6 +26,14 @@ server.connection({
 	}
 });
 
+// // Set cookie definition
+// server.state('session', {
+//     ttl: 24 * 60 * 60 * 1000,     // One day
+//     isSecure: true,
+//     path: '/',
+//     encoding: 'base64json'
+// });
+
 // Log (to console & file) configuration
 const options = {
 	ops: {
@@ -65,7 +73,12 @@ require('routes')(server);
 // Register and if no errors start the server
 server.register({
 	register: require('good'),
-	options,
+	register: require('hapi-server-session'),
+	options: {
+		cookie: {
+			isSecure: false,
+		},
+	},
 }, (err) => {
 
 	// Error loading the configuration
