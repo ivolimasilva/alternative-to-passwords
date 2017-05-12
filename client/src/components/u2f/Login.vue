@@ -71,10 +71,12 @@ export default {
 			}
 			console.log("Posting U2F registration response");
 			// $.post(paths.u2f.register, res, responseCallback);
+			console.log(JSON.parse(localStorage.getItem('registrationRequest')));
 
 			return new Promise(function (resolve, reject) {
 				Axios.post('https://localhost:9000/u2f/register', {
-					registrationRequest: res
+					clientData: res,
+					registrationRequest: JSON.parse(localStorage.getItem('registrationRequest'))
 				})
 					.then(function (response) {
 						if (response.data.error !== undefined) {
@@ -82,7 +84,14 @@ export default {
 						}
 						else {
 							console.log("Response to registration post:");
+							// add registered key to tokens
+
 							console.log(response);
+							// Save newly registered token
+							var tmpTokens = JSON.parse(localStorage.getItem('u2fTokens'));
+							tmpTokens.push(response.data.response);
+							localStorage.setItem("u2fTokens", JSON.stringify(tmpTokens));
+							console.log(localStorage.getItem('u2fTokens'));
 							console.log("U2F enrolment complete");
 							self.closeModal();
 							resolve(response);
@@ -102,18 +111,32 @@ export default {
 
 			return new Promise(function (resolve, reject) {
 				console.log("Requesting U2F registration challenge")
-				// $.get(paths.u2f.register, { tokenName: tokenName }, requestCallback);
-				Axios.get('https://localhost:9000/u2f/register', { tokenName: "" })
+				// console.log(localStorage.getItem('u2fTokens'));
+				if (!localStorage.getItem('u2fTokens')) {
+					var tmpTokens = [];
+					localStorage.setItem("u2fTokens", JSON.stringify(tmpTokens));
+					console.log(localStorage.getItem('u2fTokens'));
+				}
+
+				Axios.get('https://localhost:9000/u2f/register', {
+					params: {
+						tokens: localStorage.getItem('u2fTokens')
+					}
+				})
 					.then(function (response) {
 						console.log("Waiting for U2F input");
-						console.log(response.data.appId);
-						console.log(response.data.registerRequests);
-						console.log(response.data.registeredKeys);
-						u2f.register(response.data.appId, response.data.registerRequests, response.data.registeredKeys, self.registerCallback, 15);
+						var registrationRequest = response.data.registrationRequest;
+						console.log(registrationRequest.appId);
+						console.log(registrationRequest.registerRequests);
+						console.log(registrationRequest.registeredKeys);
+
+						// locally store registration request
+						localStorage.setItem('registrationRequest', JSON.stringify(registrationRequest));
+						u2f.register(registrationRequest.appId, registrationRequest.registerRequests, registrationRequest.registeredKeys, self.registerCallback, 15);
 					})
 					.catch(error => {
-						console.log("Axios get error");
-						// self.error = error.response.data.message;
+						console.log("u2f register error: " + error);
+						// also abort registerCallback?
 					})
 			});
 		},

@@ -29,22 +29,24 @@ module.exports = function (server) {
 			// },
 			handler: function (request, reply) {
 
-
-				var tokens = request.session.tokens || [];
+				var tokens = JSON.parse(request.query.tokens.toString()) || [];
 				var appId = 'https://localhost:' + 8080;
+				console.log('tokens');
+				console.log(tokens);
 
 				u2f.startRegistration(appId, tokens)
 					.then(function (registrationRequest) {
-						// Save registration request to session for later use
-						request.session.registrationRequest = registrationRequest;
-
+						// Save registration request in local storage for later use
+						// localStorage.setItem('registrationRequest', registrationRequest);
+						// request.session.registrationRequest = registrationRequest;
+						console.log('dafuq');
+						console.log(registrationRequest);
 						console.log(registrationRequest.appId);
 						console.log(registrationRequest.registerRequests);
 						console.log(registrationRequest.registeredKeys);
 
 						// Send registration request to client
-						//reply.json(registrationRequest);
-						return reply({ appId: registrationRequest.appId, registerRequests: registrationRequest.registerRequests, registeredKeys: registrationRequest.registeredKeys });
+						return reply({ registrationRequest: registrationRequest });
 
 					}, function (error) {
 						// Handle registration request error
@@ -84,14 +86,14 @@ module.exports = function (server) {
 				console.log('\nREQUEST\n')
 				console.log(request);
 
-				console.log('\nREQUEST STATE REQUEST\n')
-				console.log(request.session.registrationRequest);
+				console.log('\nPayload clientData\n')
+				console.log(request.payload.clientData);
 
-				console.log('\nREGISTRATION REQUEST\n')
-				console.log(registrationRequest);
+				console.log('\nPayload registrationRequest\n')
+				console.log(request.payload.registrationRequest);
 
 				// Process registration response
-				u2f.finishRegistration(request.session.registrationRequest, request.payload.registrationRequest)
+				u2f.finishRegistration(request.payload.registrationRequest, request.payload.clientData)
 					.then(function (registrationStatus) {
 						// Save device meta structure for future authentication use
 						var meta = {
@@ -102,15 +104,6 @@ module.exports = function (server) {
 						console.log("\nMETA\n");
 						console.log(meta);
 
-						// console.log('\nSTATE\n');
-						// console.log(request.state);
-
-						if (!request.session.tokens) {
-							request.session.tokens = [];
-						}
-
-						// Save newly registered token
-						request.session.tokens.push(meta);
 						return reply({ response: meta });
 
 					}, function (error) {

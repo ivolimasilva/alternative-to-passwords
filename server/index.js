@@ -73,12 +73,6 @@ require('routes')(server);
 // Register and if no errors start the server
 server.register({
 	register: require('good'),
-	register: require('hapi-server-session'),
-	options: {
-		cookie: {
-			isSecure: false,
-		},
-	},
 }, (err) => {
 
 	// Error loading the configuration
