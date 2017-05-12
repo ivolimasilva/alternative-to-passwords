@@ -33,9 +33,6 @@ module.exports = function (server) {
 
 					Jwt.encode(Config.test.id)
 						.then(function (encoded) {
-
-							console.log(encoded);
-
 							return reply({ jwt: encoded });
 						})
 						.catch(function (err) {

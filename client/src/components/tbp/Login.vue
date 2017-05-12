@@ -61,7 +61,9 @@ export default {
 					console.log(response.data.jwt);
 
 					Auth.user.authenticated = true;
-					localStorage.setItem('jwt', response.data.jwt);
+					localStorage.setItem('session', response.data.jwt);
+
+					self.$router.push({ path: 'profile' });
 				})
 				.catch(error => {
 					self.error = error.response.data.message;
