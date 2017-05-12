@@ -10,16 +10,16 @@
 					<p class="control has-icon">
 						<input class="input is-medium" type="email" placeholder="Email" v-model="email" required>
 						<span class="icon is-small">
-									<i class="fa fa-envelope"></i>
-								</span>
+							<i class="fa fa-envelope"></i>
+						</span>
 					</p>
 				</div>
 				<div class="field">
 					<p class="control has-icon">
 						<input class="input is-medium" type="password" placeholder="Password" v-model="password" required>
 						<span class="icon is-small">
-									<i class="fa fa-lock"></i>
-								</span>
+							<i class="fa fa-lock"></i>
+						</span>
 					</p>
 				</div>
 				<span class="help is-danger" v-text="error"></span>
