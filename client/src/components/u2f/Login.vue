@@ -71,12 +71,12 @@ export default {
 			}
 			console.log("Posting U2F registration response");
 			// $.post(paths.u2f.register, res, responseCallback);
-			console.log(JSON.parse(localStorage.getItem('registrationRequest')));
+			console.log(JSON.parse(localStorage.getItem('u2fRegistrationRequest')));
 
 			return new Promise(function (resolve, reject) {
 				Axios.post('https://localhost:9000/u2f/register', {
 					clientData: res,
-					registrationRequest: JSON.parse(localStorage.getItem('registrationRequest'))
+					registrationRequest: JSON.parse(localStorage.getItem('u2fRegistrationRequest'))
 				})
 					.then(function (response) {
 						if (response.data.error !== undefined) {
@@ -88,17 +88,17 @@ export default {
 
 							console.log(response);
 							// Save newly registered token
-							var tmpTokens = JSON.parse(localStorage.getItem('u2fTokens'));
+							var tmpTokens = JSON.parse(localStorage.getItem('u2fRegisteredKeys'));
 							tmpTokens.push(response.data.response);
-							localStorage.setItem("u2fTokens", JSON.stringify(tmpTokens));
-							console.log(localStorage.getItem('u2fTokens'));
+							localStorage.setItem("u2fRegisteredKeys", JSON.stringify(tmpTokens));
+							console.log(localStorage.getItem('u2fRegisteredKeys'));
 							console.log("U2F enrolment complete");
 							self.closeModal();
 							resolve(response);
 						}
 					})
 					.catch(error => {
-						console.log("Axios post error");
+						console.log("Axios register post error");
 					});
 			});
 		},
@@ -111,16 +111,16 @@ export default {
 
 			return new Promise(function (resolve, reject) {
 				console.log("Requesting U2F registration challenge")
-				// console.log(localStorage.getItem('u2fTokens'));
-				if (!localStorage.getItem('u2fTokens')) {
+				// console.log(localStorage.getItem('u2fRegisteredKeys'));
+				if (!localStorage.getItem('u2fRegisteredKeys')) {
 					var tmpTokens = [];
-					localStorage.setItem("u2fTokens", JSON.stringify(tmpTokens));
-					console.log(localStorage.getItem('u2fTokens'));
+					localStorage.setItem("u2fRegisteredKeys", JSON.stringify(tmpTokens));
+					console.log(localStorage.getItem('u2fRegisteredKeys'));
 				}
 
 				Axios.get('https://localhost:9000/u2f/register', {
 					params: {
-						tokens: localStorage.getItem('u2fTokens')
+						tokens: localStorage.getItem('u2fRegisteredKeys')
 					}
 				})
 					.then(function (response) {
@@ -131,7 +131,7 @@ export default {
 						console.log(registrationRequest.registeredKeys);
 
 						// locally store registration request
-						localStorage.setItem('registrationRequest', JSON.stringify(registrationRequest));
+						localStorage.setItem('u2fRegistrationRequest', JSON.stringify(registrationRequest));
 						u2f.register(registrationRequest.appId, registrationRequest.registerRequests, registrationRequest.registeredKeys, self.registerCallback, 15);
 					})
 					.catch(error => {
@@ -160,6 +160,32 @@ export default {
 				}
 			}
 			console.log("Posting U2F signature response")
+
+			return new Promise(function (resolve, reject) {
+				Axios.post('https://localhost:9000/u2f/login', {
+					challenge: JSON.parse(localStorage.getItem('u2fAuthenticationRequest')),
+					deviceResponse: res,
+					registeredKeys: JSON.parse(localStorage.getItem('u2fRegisteredKeys'))
+				})
+					.then(function (response) {
+						if (response.data.error !== undefined) {
+							console.log("U2F authentication failed: " + response.data.error);
+						}
+						else {
+							console.log("Response to authentication post:");
+							console.log(response);
+
+							console.log("U2F login successful");
+							self.closeModal();
+							resolve(response);
+						}
+					})
+					.catch(error => {
+						console.log("Axios login post error");
+					});
+			});
+
+
 			// $.post(paths.u2f.sign, res, responseCallback);
 		},
 
@@ -170,13 +196,20 @@ export default {
 			self.modalIsActive = true;
 
 			Axios.get('https://localhost:9000/u2f/login', {
+				params: {
+					tokens: localStorage.getItem('u2fRegisteredKeys')
+				}
 			})
 				.then(function (response) {
 					console.log("Waiting for U2F input");
-					console.log(response.data.appId);
-					console.log(response.data.challenge);
-					console.log(response.data.registeredKeys);
-					u2f.sign(response.data.appId, response.data.challenge, response.data.registeredKeys, self.signatureCallBack, 15);
+					var authenticationRequest = response.data.authenticationRequest;
+					console.log(authenticationRequest.appId);
+					console.log(authenticationRequest.challenge);
+					console.log(authenticationRequest.registeredKeys);
+
+					// locally store authentication request
+					localStorage.setItem("u2fAuthenticationRequest", JSON.stringify(authenticationRequest));
+					u2f.sign(authenticationRequest.appId, authenticationRequest.challenge, authenticationRequest.registeredKeys, self.signatureCallBack, 15);
 				})
 				.catch(error => {
 				});

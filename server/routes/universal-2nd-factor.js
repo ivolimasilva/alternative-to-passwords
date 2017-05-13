@@ -113,39 +113,67 @@ module.exports = function (server) {
 		}
 	});
 
+	/*
+	 * Route for the U2F device registration
+	 * Method:  POST
+	 * Params:  email		- Email of the user
+	 *          password	- Password of the user
+	 * Returns: 
+	 */
+	server.route({
+		path: '/u2f/login',
+		method: 'POST',
+		config: {
+			handler: function (request, reply) {
+				var challenge = request.payload.challenge;
+				var deviceResponse = request.payload.deviceResponse;
+				var registeredKeys = request.payload.registeredKeys || [];
+
+				console.log('\nLOGIN REQUEST\n')
+				console.log(request);
+
+				console.log('\nnLOGIN Payload challenge\n')
+				console.log(request.payload.authenticationRequest);
+
+				console.log('\nnLOGIN Payload deviceResponse\n')
+				console.log(request.payload.deviceResponse);
+
+				console.log('\nnLOGIN Payload deviceResponse\n')
+				console.log(request.payload.registeredKeys);
+
+
+				// Process registration response
+				u2f.finishAuthentication(challenge, deviceResponse, registeredKeys)
+					.then(function (authenticationStatus) {
+						// Respond to user
+						return reply({ authenticationStatus: authenticationStatus });
+
+					}, function (error) {
+						// Handle registration error
+						return reply({ statusCode: 500, error });
+					});
+			}
+		}
+	});
+
 	server.route({
 		path: '/u2f/login',
 		method: 'GET',
 		config: {
-			// Validate payload params before handler gets the load
-			// validate: {
-			// 	payload: {
-			// 		// email: Joi.string().email().required()
-			// 	}
-			// },
 			handler: function (request, reply) {
 
-				var tokens = request.session.tokens;
+				var tokens = JSON.parse(request.query.tokens.toString()) || [];
 				var appId = 'https://localhost:' + 8080;
 
 				u2f.startAuthentication(appId, tokens)
 					.then(function (authenticationRequest) {
 						// Save authentication request to session for later use
-						request.session.authenticationRequest = authenticationRequest;
 						// Send registration request to client
-						return reply({ appId: authenticationRequest.appId, challenge: authenticationRequest.challenge, registeredKeys: authenticationRequest.registeredKeys });
+						return reply({ authenticationRequest: authenticationRequest });
 					}, function (error) {
 						// Handle registration request error
-						// reply.status(500).json(error);
 						return reply({ statusCode: 500, error });
 					});
-
-				// if (request.payload.email == Config.test.email) {
-				// Set flag that server is expecting to receive U2F in meantime
-				// return reply({ statusCode: 200 });
-				// } else {
-				// return reply(Boom.badData('Incorrect login information.'));
-				// }
 			}
 		}
 	});
