@@ -7,8 +7,12 @@
 				<button class="delete" v-on:click="close"></button>
 			</header>
 			<section class="modal-card-body">
-				<!-- Here maybe an icon of a device key? This form has no validate button because that event should be triggered by the insertation of the device key -->
-				<p>{{ modalMessage }}</p>
+				<div style="width:100%;">
+					<div style="margin: 0 auto;">
+						<img src="./u2f-device.png" style="max-height: 30%; max-width: 30%;" />
+						<p>{{ modalMessage }} </p>
+					</div>
+				</div>
 			</section>
 			<footer class="modal-card-foot">
 				<a class="button" v-on:click="close">Cancel</a>

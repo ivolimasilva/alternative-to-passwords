@@ -97,6 +97,8 @@ export default {
 							tmpTokens.push(response.data.response);
 							localStorage.setItem("u2fRegisteredKeys", JSON.stringify(tmpTokens));
 							console.log("U2F enrolment complete");
+							self.registerError = '';
+							self.loginError = '';
 							resolve(response);
 						}
 					})
@@ -187,6 +189,8 @@ export default {
 						else {
 							console.log("U2F login successful");
 							console.log(response);
+							self.registerError = '';
+							self.loginError = '';
 							resolve(response);
 						}
 					})

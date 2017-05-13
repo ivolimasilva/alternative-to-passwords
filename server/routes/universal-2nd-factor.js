@@ -29,13 +29,10 @@ module.exports = function (server) {
 
 				u2f.startRegistration(appId, registeredKeys)
 					.then(function (registrationRequest) {
-
 						// Send registration request to client
 						return reply({ registrationRequest: registrationRequest });
-
 					}, function (error) {
 						// Handle registration request error
-						// reply.status(500).json(error);
 						return reply({ statusCode: 500, error });
 					});
 			}
@@ -70,7 +67,6 @@ module.exports = function (server) {
 							certificate: registrationStatus.certificate
 						}
 						return reply({ response: meta });
-
 					}, function (error) {
 						return reply({ statusCode: 500, error });
 					});
@@ -137,7 +133,6 @@ module.exports = function (server) {
 					.then(function (authenticationStatus) {
 						// Respond to user
 						return reply({ authenticationStatus: authenticationStatus });
-
 					}, function (error) {
 						// Handle registration error
 						return reply({ statusCode: 500, error });
