@@ -141,9 +141,9 @@ export default {
 						u2f.register(registrationRequest.appId, registrationRequest.registerRequests, registrationRequest.registeredKeys, self.registerCallback, 15);
 					})
 					.catch(error => {
+						self.closeModal();
 						console.log("U2F register GET error: " + error);
 						self.registerError = "U2F register GET error: " + error;
-						// try to also abort registerCallback?
 					})
 			});
 		},
@@ -222,6 +222,7 @@ export default {
 					u2f.sign(authenticationRequest.appId, authenticationRequest.challenge, authenticationRequest.registeredKeys, self.signatureCallBack, 15);
 				})
 				.catch(error => {
+					self.closeModal();
 					console.log("U2F login GET error: " + error);
 					self.loginError = "U2F login POST error: " + error;
 				});

@@ -7,11 +7,10 @@
 				<button class="delete" v-on:click="close"></button>
 			</header>
 			<section class="modal-card-body">
-				<div style="width:100%;">
-					<div style="margin: 0 auto;">
-						<img src="./u2f-device.png" style="max-height: 30%; max-width: 30%;" />
-						<p>{{ modalMessage }} </p>
-					</div>
+				<div style="text-align: center;">
+					<img src="./u2f-device.png" style="max-height: 30%; max-width: 30%;" />
+	
+					<p style="padding-top: 5%;">{{ modalMessage }} </p>
 				</div>
 			</section>
 			<footer class="modal-card-foot">
