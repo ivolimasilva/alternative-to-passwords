@@ -8,7 +8,7 @@
 			</header>
 			<section class="modal-card-body">
 				<div style="text-align: center;">
-					<img src="./u2f-device.png" style="max-height: 30%; max-width: 30%;" />
+					<img src="./u2f-device.gif" style="max-height: 30%; max-width: 30%;" />
 	
 					<p style="padding-top: 5%;">{{ modalMessage }} </p>
 				</div>
