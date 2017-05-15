@@ -1,5 +1,8 @@
 export default {
     user: {
-        authenticated: false
+        authenticated: window.localStorage.getItem('session') ? true : false
+    },
+    check() {
+        
     }
 }
