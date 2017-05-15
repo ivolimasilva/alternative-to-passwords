@@ -2,7 +2,8 @@
 
 var Hapi = require('hapi'),
 	Joi = require('joi'),
-	Config = require('config');
+	Config = require('config'),
+	Fs = require('fs');
 
 // Create a server with validation
 var server = new Hapi.Server({
@@ -18,8 +19,20 @@ server.connection({
 	port: Config.server.port,
 	routes: {
 		cors: true
+	},
+	tls: {
+		key: Fs.readFileSync("certs/fakeName.key"),
+		cert: Fs.readFileSync("certs/public.pem")
 	}
 });
+
+// // Set cookie definition
+// server.state('session', {
+//     ttl: 24 * 60 * 60 * 1000,     // One day
+//     isSecure: true,
+//     path: '/',
+//     encoding: 'base64json'
+// });
 
 // Log (to console & file) configuration
 const options = {
@@ -60,7 +73,6 @@ require('routes')(server);
 // Register and if no errors start the server
 server.register({
 	register: require('good'),
-	options,
 }, (err) => {
 
 	// Error loading the configuration
@@ -72,5 +84,4 @@ server.register({
 	server.start(() => {
 		console.info('Server started @', server.info.uri);
 	});
-
 });

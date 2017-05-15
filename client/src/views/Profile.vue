@@ -25,7 +25,7 @@ export default {
 	mounted: function () {
 		var self = this;
 
-		Axios.get('http://localhost:9000/user', {
+		Axios.get('https://localhost:9000/user', {
 			params: {
 				token: localStorage.getItem('session')
 			}
