@@ -3,7 +3,8 @@
 var Joi = require('joi'),
 	Boom = require('boom'),
 	Config = require('config'),
-	Promise = require('bluebird');
+	Promise = require('bluebird'),
+	Nodemailer = require('nodemailer');
 
 module.exports = function (server) {
 
@@ -28,6 +29,15 @@ module.exports = function (server) {
 				if (request.payload.email == Config.test.email) {
 					// Generate Code
 					// Send code to mobile app
+					var transporter = Nodemailer.createTransport({
+						service: Config.email.service,
+						auth: {
+							user: Config.email.user,
+							pass: Config.email.password
+						}
+					});
+
+					// Return status OK
 					return reply({ statusCode: 200 });
 				} else {
 					return reply(Boom.badData('Incorrect login information.'));

@@ -1,6 +1,7 @@
 // Modules
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import VueCookie from 'vue-cookie';
 import Auth from './auth';
 
 // Define Axios to global
@@ -11,6 +12,7 @@ window.Auth = Auth;
 
 // Vue modules
 Vue.use(VueRouter);
+Vue.use(VueCookie);
 
 import router from './router';
 
