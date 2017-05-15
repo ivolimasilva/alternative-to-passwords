@@ -4,6 +4,7 @@ var Joi = require('joi'),
 	Boom = require('boom'),
 	Config = require('config'),
 	u2f = require('authdog'),
+	Jwt = require('utils/jwt'),
 	Promise = require('bluebird'),
 	appId = 'https://localhost:' + 8080;
 
@@ -132,7 +133,13 @@ module.exports = function (server) {
 				u2f.finishAuthentication(challenge, deviceResponse, registeredKeys)
 					.then(function (authenticationStatus) {
 						// Respond to user
-						return reply({ authenticationStatus: authenticationStatus });
+						Jwt.encode(Config.test.id)
+						.then(function (encoded) {
+							return reply({ jwt: encoded, authenticationStatus: authenticationStatus });
+						})
+						.catch(function (err) {
+							return reply(Boom.badImplementation('Code monkeys bro.'));
+						});
 					}, function (error) {
 						// Handle registration error
 						return reply({ statusCode: 500, error });

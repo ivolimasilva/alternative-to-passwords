@@ -191,6 +191,9 @@ export default {
 							console.log(response);
 							self.registerError = '';
 							self.loginError = '';
+							localStorage.setItem('session', response.data.jwt);
+							console.log(response.data.jwt);
+							self.$router.push({ path: 'profile' });
 							resolve(response);
 						}
 					})
