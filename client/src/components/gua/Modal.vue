@@ -7,10 +7,10 @@
 				<button class="delete" v-on:click="close"></button>
 			</header>
 			<section class="modal-card-body">
-				<img :src="imageUrl" v-on:click= "getCoordinates" ref="myimg"/>
+				<img :src="imageUrl" id="imagetest" v-on:click="getCoordinates" ref="myimg" />
 				<!-- Here will be an image and this component will listen to where the user clicks in order to send those coordinates to the server for validation -->
 				{{x}} and {{y}}
-			</section>
+				</section>
 			<footer class="modal-card-foot">
 				<a class="button is-primary">Validate</a>
 				<a class="button" v-on:click="close">Cancel</a>
@@ -26,7 +26,8 @@ export default {
 		return {
 			code: '',
 			x: 0,
-			y: 0
+			y: 0,
+			coord: []
 		};
 	},
 	props: {
@@ -40,6 +41,7 @@ export default {
 	},
 	methods: {
 		onSubmit: function () {
+		
 		},
 		findPosition: function (oElement) {
 			if (typeof (oElement.offsetParent) != "undefined") {
@@ -58,6 +60,12 @@ export default {
 			var PosY = 0;
 			var ImgPos;
 			ImgPos = this.findPosition(this.$refs.myimg);
+
+			var style = getComputedStyle(this.$refs.myimg);
+			console.log(style.width);
+			console.log(style.height);
+
+
 			if (!e) var e = window.event;
 			if (e.pageX || e.pageY) {
 				PosX = e.pageX;
@@ -73,6 +81,8 @@ export default {
 			PosY = PosY - ImgPos[1];
 			this.x = PosX;
 			this.y = PosY;
+			this.coord.push({x: this.x, y: this.y});
+			console.log(this.coord);
 		},
 		close: function () {
 			this.$emit('close');

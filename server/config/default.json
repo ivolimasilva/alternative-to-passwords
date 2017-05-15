@@ -5,7 +5,8 @@
 	"test": {
 		"id": "0001",
 		"email": "test_user@mail.com",
-		"password": 12345678
+		"password": 12345678,
+		"coordinates": [{"x": 0, "y": 0}]
 	},
 	"jwt": {
 		"secret": "PUT YOUR SECRET HERE"
