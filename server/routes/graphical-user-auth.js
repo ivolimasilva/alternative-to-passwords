@@ -5,7 +5,8 @@ var Joi = require('joi'),
 	Config = require('config'),
 	Promise = require('bluebird'),
 	Path = require('path'),
-	Inert = require('inert');
+	Inert = require('inert'),
+	Jwt = require('utils/jwt');
 
 module.exports = function (server) {
 
@@ -45,21 +46,31 @@ module.exports = function (server) {
 		method: 'POST',
 		config: {
 			// Validate payload params before handler gets the load
+
 			validate: {
 				payload: {
-					coord: Joi.array().lenght(Config.test.coordinates.lenght).required()
+					coord: Joi.array().length(Config.test.coordinates.length).required()
 				}
 			},
+
 			handler: function (request, reply) {
+
 				var flag = false;
 				for (var i in request.payload.coord) {
-					if (request.payload.coord[i] != Config.test.coordinates[i]) {
+					if ((request.payload.coord[i].x > (Config.test.coordinates[i].x + 50) || request.payload.coord[i].x < (Config.test.coordinates[i].x - 50))
+						|| (request.payload.coord[i].y > (Config.test.coordinates[i].y + 50) || request.payload.coord[i].y < (Config.test.coordinates[i].y - 50))) {
 						flag = true;
-						return reply(Boom.badData('The graphical password is wrong.'));
+						return reply(Boom.badRequest('The graphical password is wrong.'));
 					}
 				}
-				if(!flag){
-					return reply({statusCode: 200 });
+				if (!flag) {
+					Jwt.encode(Config.test.id)
+						.then((encoded) => {
+							return reply({ jwt: encoded });
+						})
+						.catch((err) => {
+							return reply(Boom.badImplementation('Code monkeys bro.'));
+						});
 				}
 			}
 		}

@@ -6,7 +6,20 @@
 		"id": "0001",
 		"email": "test_user@mail.com",
 		"password": 12345678,
-		"coordinates": [{"x": 0, "y": 0}]
+		"coordinates": [
+			{
+				"x": 64,
+				"y": 252
+			},
+			{
+				"x": 500,
+				"y": 144
+			},
+			{
+				"x": 593,
+				"y": 80
+			}
+		]
 	},
 	"jwt": {
 		"secret": "PUT YOUR SECRET HERE"

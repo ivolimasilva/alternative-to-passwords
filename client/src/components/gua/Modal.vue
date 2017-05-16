@@ -10,9 +10,10 @@
 				<img :src="imageUrl" id="imagetest" v-on:click="getCoordinates" ref="myimg" />
 				<!-- Here will be an image and this component will listen to where the user clicks in order to send those coordinates to the server for validation -->
 				{{x}} and {{y}}
-				</section>
+				<p> You have selected {{coord.length}} points from the image. </p>
+			</section>
 			<footer class="modal-card-foot">
-				<a class="button is-primary">Validate</a>
+				<button class="button is-primary" v-on:click="onSubmit">Validate</button>
 				<a class="button" v-on:click="close">Cancel</a>
 			</footer>
 		</div>
@@ -41,7 +42,17 @@ export default {
 	},
 	methods: {
 		onSubmit: function () {
-		
+			var self = this;
+			Axios.post('http://localhost:9000/gua/point', {
+				coord: this.coord
+			})
+				.then(function (response) {
+					self.error = '';
+					console.log(response);
+				})
+				.catch(error => {
+					self.error = error.response.data.message;
+				});
 		},
 		findPosition: function (oElement) {
 			if (typeof (oElement.offsetParent) != "undefined") {
@@ -62,8 +73,6 @@ export default {
 			ImgPos = this.findPosition(this.$refs.myimg);
 
 			var style = getComputedStyle(this.$refs.myimg);
-			console.log(style.width);
-			console.log(style.height);
 
 
 			if (!e) var e = window.event;
@@ -81,8 +90,8 @@ export default {
 			PosY = PosY - ImgPos[1];
 			this.x = PosX;
 			this.y = PosY;
-			this.coord.push({x: this.x, y: this.y});
-			console.log(this.coord);
+			this.coord.push({ x: this.x, y: this.y });
+			//console.log(this.coord);
 		},
 		close: function () {
 			this.$emit('close');
