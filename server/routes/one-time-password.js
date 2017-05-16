@@ -50,7 +50,7 @@ module.exports = function (server) {
 					// Email configuration
 					var mailOptions = {
 						from: 'SSIN',
-						to: Config.test.send,
+						to: Config.test.email,
 						subject: 'OTP Code',
 						html: `
 							<h1>Authentication Code</h1>
