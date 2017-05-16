@@ -9,8 +9,8 @@
 			<section class="modal-card-body">
 				<img :src="imageUrl" id="imagetest" v-on:click="getCoordinates" ref="myimg" />
 				<!-- Here will be an image and this component will listen to where the user clicks in order to send those coordinates to the server for validation -->
-				{{x}} and {{y}}
 				<p> You have selected {{coord.length}} points from the image. </p>
+				<span class="help is-danger is-pulled-left" v-text="error"></span>
 			</section>
 			<footer class="modal-card-foot">
 				<button class="button is-primary" v-on:click="onSubmit">Validate</button>
@@ -28,7 +28,8 @@ export default {
 			code: '',
 			x: 0,
 			y: 0,
-			coord: []
+			coord: [],
+			error: ''
 		};
 	},
 	props: {
@@ -47,10 +48,12 @@ export default {
 				coord: this.coord
 			})
 				.then(function (response) {
-					self.error = '';
-					console.log(response);
+					Auth.user.authenticated = true;
+					localStorage.setItem('session', response.data.jwt);
+					self.$router.push({ path: 'profile' });
 				})
 				.catch(error => {
+					self.coord = [];
 					self.error = error.response.data.message;
 				});
 		},
@@ -107,5 +110,13 @@ export default {
 
 .modal-card-foot {
 	justify-content: flex-end !important;
+}
+
+#imgtest {
+	display: block !important;
+	min-width: 600px !important;
+	min-height: 400px !important;
+	max-width: 600px !important;
+	max-height: 400px !important;
 }
 </style>

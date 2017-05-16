@@ -57,8 +57,12 @@ module.exports = function (server) {
 
 				var flag = false;
 				for (var i in request.payload.coord) {
-					if ((request.payload.coord[i].x > (Config.test.coordinates[i].x + 50) || request.payload.coord[i].x < (Config.test.coordinates[i].x - 50))
-						|| (request.payload.coord[i].y > (Config.test.coordinates[i].y + 50) || request.payload.coord[i].y < (Config.test.coordinates[i].y - 50))) {
+					if ((request.payload.coord[i].x > (Config.test.coordinates[i].x + 100) || request.payload.coord[i].x < (Config.test.coordinates[i].x - 100))
+						|| (request.payload.coord[i].y > (Config.test.coordinates[i].y + 100) || request.payload.coord[i].y < (Config.test.coordinates[i].y - 100))) {
+					//	console.log(i);
+					//	console.log(request.payload.coord[i]);
+					//	console.log(Config.test.coordinates[i]);
+						console.log();
 						flag = true;
 						return reply(Boom.badRequest('The graphical password is wrong.'));
 					}
