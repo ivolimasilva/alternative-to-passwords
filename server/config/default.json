@@ -4,8 +4,8 @@
 	},
 	"test": {
 		"id": "0001",
-		"email": "test_user@mail.com",
-		"password": 12345678,
+		"email": "PUT YOUR E-MAIL HERE",
+		"password": "PUT YOUR PASSWORD HERE",
 		"coordinates": [
 			{
 				"x": 64,
@@ -19,9 +19,15 @@
 				"x": 593,
 				"y": 80
 			}
-		]
+		],
+		"private": "PUT YOUR PRIVATE QUOTE"
 	},
 	"jwt": {
 		"secret": "PUT YOUR SECRET HERE"
+	},
+	"email": {
+		"service": "Gmail",
+		"user": "ssin.mieic@gmail.com",
+		"password": "ssin2017"
 	}
 }

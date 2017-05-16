@@ -48,7 +48,7 @@ export default {
 		onSubmit: function () {
 			var self = this;
 
-			Axios.post('http://localhost:9000/gua/login', {
+			Axios.post('https://localhost:9000/gua/login', {
 				email: this.email
 			})
 				.then(function (response) {

@@ -1,21 +1,20 @@
 <template>
-	<div class="modal"
-	     v-bind:class="{ 'is-active' : isActive }">
-		<div class="modal-background"
-		     v-on:click="close"></div>
+	<div class="modal" v-bind:class="{ 'is-active' : isActive }">
+		<div class="modal-background" v-on:click="close"></div>
 		<div class="modal-card">
 			<header class="modal-card-head">
-				<p class="modal-card-title">U2F - Insert your device key</p>
-				<button class="delete"
-				        v-on:click="close"></button>
+				<p class="modal-card-title">{{ modalTitle }}</p>
+				<button class="delete" v-on:click="close"></button>
 			</header>
 			<section class="modal-card-body">
-				<!-- Here maybe a icon of a device key? This form has no validate button because that event should be triggered by the insertation of the device key -->
-				<p>Waiting for U2F Key to be inserted.</p>
+				<div style="text-align: center;">
+					<img src="./u2f-device.gif" style="max-height: 30%; max-width: 30%;" />
+	
+					<p style="padding-top: 5%;">{{ modalMessage }} </p>
+				</div>
 			</section>
 			<footer class="modal-card-foot">
-				<a class="button"
-				   v-on:click="close">Cancel</a>
+				<a class="button" v-on:click="close">Cancel</a>
 			</footer>
 		</div>
 	</div>
@@ -24,20 +23,21 @@
 <script>
 export default {
 	name: 'u2f-modal',
-	data: function () {
-		return {
-			code: ''
-		};
-	},
 	props: {
 		isActive: {
 			type: Boolean,
 			required: true
+		},
+		modalTitle: {
+			type: String,
+			default: ''
+		},
+		modalMessage: {
+			type: String,
+			default: ''
 		}
 	},
 	methods: {
-		onSubmit: function () {
-		},
 		close: function () {
 			this.$emit('close');
 		}

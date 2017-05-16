@@ -33,7 +33,7 @@ module.exports = function (server) {
 					// Send code to mobile app
 					var imageauthUrl = Path.resolve('./images/test_image.jpg');
 					console.log(imageauthUrl);
-					return reply({ imageauth: 'http://localhost:9000/images/test_image.jpg' });
+					return reply({ imageauth: 'https://localhost:9000/images/test_image.jpg' });
 				}
 				else {
 					return reply(Boom.badData('Incorrect login information.'));
@@ -45,14 +45,11 @@ module.exports = function (server) {
 		path: '/gua/point',
 		method: 'POST',
 		config: {
-			// Validate payload params before handler gets the load
-
 			validate: {
 				payload: {
 					coord: Joi.array().length(Config.test.coordinates.length).required()
 				}
 			},
-
 			handler: function (request, reply) {
 
 				var flag = false;

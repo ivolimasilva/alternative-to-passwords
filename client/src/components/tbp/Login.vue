@@ -10,16 +10,16 @@
 					<p class="control has-icon">
 						<input class="input is-medium" type="email" placeholder="Email" v-model="email" required>
 						<span class="icon is-small">
-									<i class="fa fa-envelope"></i>
-								</span>
+							<i class="fa fa-envelope"></i>
+						</span>
 					</p>
 				</div>
 				<div class="field">
 					<p class="control has-icon">
 						<input class="input is-medium" type="password" placeholder="Password" v-model="password" required>
 						<span class="icon is-small">
-									<i class="fa fa-lock"></i>
-								</span>
+							<i class="fa fa-lock"></i>
+						</span>
 					</p>
 				</div>
 				<span class="help is-danger" v-text="error"></span>
@@ -51,7 +51,7 @@ export default {
 		onSubmit: function () {
 			var self = this;
 
-			Axios.post('http://localhost:9000/tbp/login', {
+			Axios.post('https://localhost:9000/tbp/login', {
 				email: this.email,
 				password: this.password
 			})
@@ -61,7 +61,9 @@ export default {
 					console.log(response.data.jwt);
 
 					Auth.user.authenticated = true;
-					localStorage.setItem('jwt', response.data.jwt);
+					localStorage.setItem('session', response.data.jwt);
+
+					self.$router.push({ path: 'profile' });
 				})
 				.catch(error => {
 					self.error = error.response.data.message;

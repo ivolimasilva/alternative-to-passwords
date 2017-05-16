@@ -44,7 +44,7 @@ export default {
 	methods: {
 		onSubmit: function () {
 			var self = this;
-			Axios.post('http://localhost:9000/gua/point', {
+			Axios.post('https://localhost:9000/gua/point', {
 				coord: this.coord
 			})
 				.then(function (response) {
