@@ -8,30 +8,23 @@
 			<form v-on:submit.prevent="onSubmit">
 				<div class="field">
 					<p class="control has-icon">
-						<input class="input is-medium"
-						       type="email"
-						       placeholder="Email"
-						       v-model="email"
-						       required>
+						<input class="input is-medium" type="email" placeholder="Email" v-model="email" required>
 						<span class="icon is-small">
 							<i class="fa fa-envelope"></i>
 						</span>
 					</p>
 				</div>
-				<span class="help is-danger"
-				      v-text="error"></span>
+				<span class="help is-danger" v-text="error"></span>
 				<div class="field">
 					<p class="control">
-						<button class="button is-primary is-medium is-fullwidth"
-						        type="submit">
+						<button class="button is-primary is-medium is-fullwidth" type="submit">
 							Login
 						</button>
 					</p>
 				</div>
 			</form>
 		</div>
-		<gua-modal v-bind:is-active="modal"
-		           v-on:close="closeModal"></gua-modal>
+		<gua-modal v-bind:is-active="modal" v-on:close="closeModal" v-bind:imageUrl="imageauth"></gua-modal>
 	</div>
 </template>
 
@@ -47,20 +40,22 @@ export default {
 		return {
 			email: '',
 			error: '',
-			modal: false
+			modal: false,
+			imageauth: ''
 		};
 	},
 	methods: {
 		onSubmit: function () {
 			var self = this;
 
-			Axios.post('http://localhost:9000/gua/login', {
+			Axios.post('https://localhost:9000/gua/login', {
 				email: this.email
 			})
 				.then(function (response) {
 					self.error = '';
-					// TODO
+					console.log(response);
 					self.modal = true;
+					self.imageauth = response.data.imageauth;
 				})
 				.catch(error => {
 					self.error = error.response.data.message;
