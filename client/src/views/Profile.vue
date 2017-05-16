@@ -9,6 +9,11 @@
 			<div class="container has-text-centered" v-if="error != ''">
 				<h2 class="subtitle is-3">{{ error }}</h2>
 			</div>
+			<div class="container has-text-centered" v-if="error == ''">
+				<a class="button is-primary" v-on:click="logout">
+					Logout
+				</a>
+			</div>
 		</div>
 	</div>
 </template>
@@ -38,10 +43,18 @@ export default {
 				console.log(error);
 				self.error = 'Invalid authentication information';
 			});
+	},
+	methods: {
+		logout: function () {
+			localStorage.removeItem('session');
+			this.$router.push({ path: '/' });
+		}
 	}
 }
 </script>
 
 <style scoped>
-
+.button {
+	margin-top: 30px;
+}
 </style>
