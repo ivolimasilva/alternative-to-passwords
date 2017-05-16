@@ -47,23 +47,34 @@ module.exports = function (server) {
 		config: {
 			validate: {
 				payload: {
-					coord: Joi.array().length(Config.test.coordinates.length).required()
+					coord: Joi.array().required()
 				}
 			},
 			handler: function (request, reply) {
 
 				var flag = false;
+
+				if (request.payload.coord.length != Config.test.coordinates.length) {
+					flag = true;
+					return reply(Boom.badRequest('The graphical password is wrong.'));
+				}
+
 				for (var i in request.payload.coord) {
 					if ((request.payload.coord[i].x > (Config.test.coordinates[i].x + 100) || request.payload.coord[i].x < (Config.test.coordinates[i].x - 100))
 						|| (request.payload.coord[i].y > (Config.test.coordinates[i].y + 100) || request.payload.coord[i].y < (Config.test.coordinates[i].y - 100))) {
-					//	console.log(i);
-					//	console.log(request.payload.coord[i]);
-					//	console.log(Config.test.coordinates[i]);
-						console.log();
+
+						/*
+							console.log(i);
+							console.log(request.payload.coord[i]);
+							console.log(Config.test.coordinates[i]);
+							console.log();
+						*/
+
 						flag = true;
 						return reply(Boom.badRequest('The graphical password is wrong.'));
 					}
 				}
+
 				if (!flag) {
 					Jwt.encode(Config.test.id)
 						.then((encoded) => {
