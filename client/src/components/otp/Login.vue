@@ -54,7 +54,7 @@ export default {
 		onSubmit: function () {
 			var self = this;
 
-			Axios.post('http://localhost:9000/otp/login', {
+			Axios.post('https://localhost:9000/otp/login', {
 				email: this.email
 			})
 				.then(function (response) {

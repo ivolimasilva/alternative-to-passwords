@@ -13,8 +13,8 @@
 						<p class="control has-icon">
 							<input class="input is-medium" type="text" placeholder="Code" v-model="code" required>
 							<span class="icon is-small">
-													<i class="fa fa-key"></i>
-												</span>
+								<i class="fa fa-key"></i>
+							</span>
 						</p>
 					</div>
 					<span class="help is-danger" v-text="error"></span>
@@ -27,10 +27,6 @@
 					</div>
 				</form>
 			</section>
-			<!--footer class="modal-card-foot">
-				<a class="button is-primary">Validate</a>
-				<a class="button" v-on:click="close">Cancel</a>
-			</footer-->
 		</div>
 	</div>
 </template>
@@ -52,7 +48,20 @@ export default {
 	},
 	methods: {
 		onSubmit: function () {
-			this.error = 'Not implemented yet.';
+			var self = this;
+
+			Axios.post('https://localhost:9000/otp/code', {
+				code: this.code
+			})
+				.then((response) => {
+					Auth.user.authenticated = true;
+					localStorage.setItem('session', response.data.jwt);
+
+					self.$router.push({ path: 'profile' });
+				})
+				.catch(error => {
+					self.error = error.response.data.message;
+				});
 		},
 		close: function () {
 			this.$emit('close');
